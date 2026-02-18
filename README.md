@@ -1,10 +1,45 @@
 # LayerMint Packages
 
-Monorepo for LayerMint publishable packages.
+**Overrides without forks.**
 
-This repository contains the variant runtime for frontends, a CLI for validation/diff tooling, and shared contracts/types, all as independent packages under the `@layermint/*` scope.
+Build tenant/brand/region variants with deterministic fallback, keep one shared codebase, and ship faster with less maintenance overhead.
 
-## Packages
+This monorepo contains LayerMint publishable packages under the `@layermint/*` scope.
+
+## 2-Minute Quickstart
+
+1. Clone and install:
+
+```bash
+git clone https://github.com/layermint/layermint-packages.git
+cd layermint-packages
+pnpm install
+```
+
+2. Build + run tests:
+
+```bash
+pnpm build
+pnpm test
+```
+
+3. Run local CLI help:
+
+```bash
+pnpm --filter @layermint/cli exec variant --help
+```
+
+4. (Optional) pack tarballs locally:
+
+```bash
+pnpm --filter @layermint/shared-types pack
+pnpm --filter @layermint/sdk-vite pack
+pnpm --filter @layermint/cli pack
+```
+
+At this point, SDK/CLI/shared-types are verified end-to-end locally.
+
+## What this repository includes
 
 - `@layermint/sdk-vite`: Vite plugin for layered variant override resolution.
 - `@layermint/cli`: `variant` CLI for `check`, `graph`, and `diff` commands.
@@ -44,39 +79,6 @@ pnpm build
 pnpm test
 pnpm typecheck
 ```
-
-## 2-Minute Quickstart
-
-1. Clone and install:
-
-```bash
-git clone https://github.com/layermint/layermint-packages.git
-cd layermint-packages
-pnpm install
-```
-
-2. Build + run tests:
-
-```bash
-pnpm build
-pnpm test
-```
-
-3. Run local CLI help:
-
-```bash
-pnpm --filter @layermint/cli exec variant --help
-```
-
-4. (Optional) pack tarballs locally:
-
-```bash
-pnpm --filter @layermint/shared-types pack
-pnpm --filter @layermint/sdk-vite pack
-pnpm --filter @layermint/cli pack
-```
-
-At this point, SDK/CLI/shared-types are verified end-to-end locally.
 
 ## Install from Registry
 
