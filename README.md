@@ -6,40 +6,70 @@ Build tenant/brand/region variants with deterministic fallback, keep one shared 
 
 This monorepo contains LayerMint publishable packages under the `@layermint/*` scope.
 
-## 2-Minute Quickstart
+## Install and Use (2 minutes)
 
-1. Clone and install:
-
-```bash
-git clone https://github.com/layermint/layermint-packages.git
-cd layermint-packages
-pnpm install
-```
-
-2. Build + run tests:
+### Install from npmjs
 
 ```bash
-pnpm build
-pnpm test
+npm i @layermint/sdk-vite @layermint/cli @layermint/shared-types
 ```
 
-3. Run local CLI help:
+### Install from GitHub Packages
 
 ```bash
-pnpm --filter @layermint/cli exec variant --help
+npm i @layermint/sdk-vite @layermint/cli @layermint/shared-types --registry=https://npm.pkg.github.com
 ```
 
-4. (Optional) pack tarballs locally:
+For GitHub Packages, configure `.npmrc` with a read token:
+
+```ini
+@layermint:registry=https://npm.pkg.github.com
+//npm.pkg.github.com/:_authToken=${GITHUB_PACKAGES_TOKEN}
+```
+
+### Use the Vite plugin
+
+```ts
+// vite.config.ts
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import { createVariantOverridePlugin } from '@layermint/sdk-vite'
+
+export default defineConfig({
+  plugins: [
+    react(),
+    createVariantOverridePlugin({
+      selector: {
+        region: process.env.LAYERMINT_REGION,
+        brand: process.env.LAYERMINT_BRAND,
+        tenant: process.env.LAYERMINT_TENANT,
+      },
+      layers: ['region', 'brand', 'tenant', 'default'],
+      roots: {
+        coreRoot: 'src/core',
+        variantsRoot: 'src/variants',
+      },
+      mergeStrategy: 'namedExport',
+      contractChecks: true,
+    }),
+  ],
+})
+```
+
+### Use the CLI
 
 ```bash
-pnpm --filter @layermint/shared-types pack
-pnpm --filter @layermint/sdk-vite pack
-pnpm --filter @layermint/cli pack
+# validate contracts/resolution
+npx variant check --region eu --brand nike --tenant acme
+
+# view resolution graph
+npx variant graph --region eu --brand nike --tenant acme --format mermaid
+
+# diff between selectors
+npx variant diff --from-region eu --to-region us --tenant acme
 ```
 
-At this point, SDK/CLI/shared-types are verified end-to-end locally.
-
-## What this repository includes
+## Packages
 
 - `@layermint/sdk-vite`: Vite plugin for layered variant override resolution.
 - `@layermint/cli`: `variant` CLI for `check`, `graph`, and `diff` commands.
@@ -52,49 +82,6 @@ LayerMint removes the need for tenant/brand/region forks with deterministic symb
 - override only what you need,
 - keep a shared base,
 - reduce long-term maintenance and regressions.
-
-## Structure
-
-```txt
-.
-├── packages/
-│   ├── sdk-vite/
-│   ├── cli/
-│   └── shared-types/
-├── pnpm-workspace.yaml
-├── turbo.json
-└── tsconfig.base.json
-```
-
-## Requirements
-
-- Node.js 20+
-- pnpm 9+
-
-## Local Development
-
-```bash
-pnpm install
-pnpm build
-pnpm test
-pnpm typecheck
-```
-
-## Install from Registry
-
-### npmjs
-
-```bash
-npm i @layermint/sdk-vite @layermint/cli @layermint/shared-types
-```
-
-### GitHub Packages
-
-```bash
-npm i @layermint/sdk-vite @layermint/cli @layermint/shared-types --registry=https://npm.pkg.github.com
-```
-
-> For GitHub Packages, configure `.npmrc` with a read token.
 
 ## Publishing
 
@@ -116,6 +103,35 @@ This repository publishes via release workflow on `v*` tags.
 ```bash
 git tag -a vX.Y.Z -m "vX.Y.Z"
 git push origin vX.Y.Z
+```
+
+## Development (repo maintainers)
+
+### Structure
+
+```txt
+.
+├── packages/
+│   ├── sdk-vite/
+│   ├── cli/
+│   └── shared-types/
+├── pnpm-workspace.yaml
+├── turbo.json
+└── tsconfig.base.json
+```
+
+### Requirements
+
+- Node.js 20+
+- pnpm 9+
+
+### Local commands
+
+```bash
+pnpm install
+pnpm build
+pnpm test
+pnpm typecheck
 ```
 
 ## License
