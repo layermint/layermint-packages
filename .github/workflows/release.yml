@@ -9,6 +9,7 @@ on:
 permissions:
   contents: read
   packages: write
+  id-token: write
 
 jobs:
   release:
@@ -42,10 +43,8 @@ jobs:
           pnpm --filter @layermint/cli publish --no-git-checks --registry https://npm.pkg.github.com
 
       - name: Publish to npmjs
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
-          echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > .npmrc
-          pnpm --filter @layermint/shared-types publish --no-git-checks --access public --registry https://registry.npmjs.org
-          pnpm --filter @layermint/sdk-vite publish --no-git-checks --access public --registry https://registry.npmjs.org
-          pnpm --filter @layermint/cli publish --no-git-checks --access public --registry https://registry.npmjs.org
+          rm -f .npmrc
+          (cd packages/shared-types && npm publish --provenance --access public)
+          (cd packages/sdk-vite && npm publish --provenance --access public)
+          (cd packages/cli && npm publish --provenance --access public)
