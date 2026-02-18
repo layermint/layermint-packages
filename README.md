@@ -1,24 +1,24 @@
 # LayerMint Packages
 
-Monorepo de paquetes publicables de LayerMint.
+Monorepo for LayerMint publishable packages.
 
-Este repo contiene el runtime para variantes en frontends, un CLI para validaciones y tipos compartidos, todo como paquetes independientes bajo el scope `@layermint/*`.
+This repository contains the variant runtime for frontends, a CLI for validation/diff tooling, and shared contracts/types, all as independent packages under the `@layermint/*` scope.
 
-## Paquetes
+## Packages
 
-- `@layermint/sdk-vite`: plugin Vite para resolución de overrides por capas/variantes.
-- `@layermint/cli`: CLI `variant` para `check`, `graph`, `diff`.
-- `@layermint/shared-types`: contratos y tipos reutilizables entre SDK/CLI.
+- `@layermint/sdk-vite`: Vite plugin for layered variant override resolution.
+- `@layermint/cli`: `variant` CLI for `check`, `graph`, and `diff` commands.
+- `@layermint/shared-types`: shared contracts and reusable types across SDK/CLI.
 
-## ¿Para qué sirve?
+## What is this for?
 
-LayerMint evita forks por tenant/brand/region usando resolución con fallback por símbolo:
+LayerMint removes the need for tenant/brand/region forks with deterministic symbol-level fallback:
 
-- sobrescribís solo lo necesario,
-- mantenés una base común,
-- reducís mantenimiento y regresiones.
+- override only what you need,
+- keep a shared base,
+- reduce long-term maintenance and regressions.
 
-## Estructura
+## Structure
 
 ```txt
 .
@@ -31,12 +31,12 @@ LayerMint evita forks por tenant/brand/region usando resolución con fallback po
 └── tsconfig.base.json
 ```
 
-## Requisitos
+## Requirements
 
 - Node.js 20+
 - pnpm 9+
 
-## Desarrollo local
+## Local Development
 
 ```bash
 pnpm install
@@ -45,9 +45,9 @@ pnpm test
 pnpm typecheck
 ```
 
-## Probar en 2 minutos
+## 2-Minute Quickstart
 
-1. Cloná e instalá:
+1. Clone and install:
 
 ```bash
 git clone https://github.com/layermint/layermint-packages.git
@@ -55,20 +55,20 @@ cd layermint-packages
 pnpm install
 ```
 
-2. Build + tests rápidos:
+2. Build + run tests:
 
 ```bash
 pnpm build
 pnpm test
 ```
 
-3. Probar CLI localmente:
+3. Run local CLI help:
 
 ```bash
 pnpm --filter @layermint/cli exec variant --help
 ```
 
-4. (Opcional) Empaquetar y validar tarballs:
+4. (Optional) pack tarballs locally:
 
 ```bash
 pnpm --filter @layermint/shared-types pack
@@ -76,9 +76,9 @@ pnpm --filter @layermint/sdk-vite pack
 pnpm --filter @layermint/cli pack
 ```
 
-Con eso ya verificaste que SDK/CLI/tipos están compilando y ejecutando correctamente.
+At this point, SDK/CLI/shared-types are verified end-to-end locally.
 
-## Instalación desde registry
+## Install from Registry
 
 ### npmjs
 
@@ -92,33 +92,33 @@ npm i @layermint/sdk-vite @layermint/cli @layermint/shared-types
 npm i @layermint/sdk-vite @layermint/cli @layermint/shared-types --registry=https://npm.pkg.github.com
 ```
 
-> Para GitHub Packages, configurar `.npmrc` con token de lectura.
+> For GitHub Packages, configure `.npmrc` with a read token.
 
-## Publicación
+## Publishing
 
-Este repo publica por workflow de release en tag `v*`.
+This repository publishes via release workflow on `v*` tags.
 
 - CI: lint + typecheck + test + build
-- Release: publish a GitHub Packages y npmjs
+- Release: publish to GitHub Packages and npmjs
 
-### Variables/secrets requeridos
+### Required Secret
 
-- `NPM_TOKEN`: token npm con permisos de publish para `@layermint`.
+- `NPM_TOKEN`: npm token with publish permissions for `@layermint`.
 
-### Flujo recomendado
+### Recommended Flow
 
-1. Actualizar versiones (`package.json` de cada paquete).
-2. Commit + push a `main`.
-3. Crear tag:
+1. Update package versions (`package.json` for each package).
+2. Commit + push to `main`.
+3. Create and push a release tag:
 
 ```bash
 git tag -a vX.Y.Z -m "vX.Y.Z"
 git push origin vX.Y.Z
 ```
 
-## Licencia
+## License
 
-MIT — ver [`LICENSE`](./LICENSE).
+MIT — see [`LICENSE`](./LICENSE).
 
 ## Contributors
 
