@@ -1,0 +1,27 @@
+{
+  "name": "@layermint/cli",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "variant": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "lint": "echo 'cli lint placeholder'",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@layermint/sdk-vite": "workspace:*",
+    "@layermint/shared-types": "workspace:*",
+    "commander": "^13.1.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
