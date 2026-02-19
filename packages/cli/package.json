@@ -1,7 +1,23 @@
 {
   "name": "@layermint/cli",
-  "version": "0.1.1",
+  "version": "0.1.2",
+  "description": "CLI for checking LayerMint variant resolution, graphs, and diffs.",
   "license": "MIT",
+  "author": "LayerMint contributors",
+  "homepage": "https://github.com/layermint/layermint-packages#readme",
+  "bugs": {
+    "url": "https://github.com/layermint/layermint-packages/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/layermint/layermint-packages.git"
+  },
+  "keywords": [
+    "layermint",
+    "variants",
+    "cli",
+    "typescript"
+  ],
   "type": "module",
   "bin": {
     "variant": "dist/index.js"

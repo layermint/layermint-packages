@@ -1,7 +1,7 @@
 {
-  "name": "@layermint/sdk-vite",
-  "version": "0.1.2",
-  "description": "Vite plugin for LayerMint symbol-level variant overrides.",
+  "name": "@layermint/sdk-webpack",
+  "version": "0.1.1",
+  "description": "Webpack plugin for LayerMint symbol-level variant overrides.",
   "license": "MIT",
   "author": "LayerMint contributors",
   "homepage": "https://github.com/layermint/layermint-packages#readme",
@@ -14,7 +14,7 @@
   },
   "keywords": [
     "layermint",
-    "vite",
+    "webpack",
     "variants",
     "typescript"
   ],
@@ -25,23 +25,20 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
-    },
-    "./core": {
-      "types": "./dist/core/engine.d.ts",
-      "import": "./dist/core/engine.js"
     }
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
-    "lint": "echo 'sdk-vite lint placeholder'",
+    "lint": "echo 'sdk-webpack lint placeholder'",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@layermint/sdk-core": "workspace:*",
-    "@layermint/shared-types": "workspace:*",
-    "typescript": "^5.8.2",
-    "vite": "^6.2.1"
+    "@layermint/shared-types": "workspace:*"
+  },
+  "peerDependencies": {
+    "webpack": "^5.0.0"
   },
   "files": [
     "dist"

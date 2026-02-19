@@ -1,7 +1,7 @@
 import { resolve } from 'node:path'
 import type { Plugin } from 'vite'
 import type { VariantPluginOptions } from '@layermint/shared-types'
-import { buildResolutionGraph, resolveSelector, validateContracts } from './core/engine.js'
+import { buildResolutionGraph, resolveSelector, validateContracts } from '@layermint/sdk-core/engine'
 
 const VIRTUAL_PREFIX = '\0virtual:layermint/'
 
@@ -89,4 +89,4 @@ export function createVariantOverridePlugin(options: VariantPluginOptions): Plug
   }
 }
 
-export * from './core/engine.js'
+export * from '@layermint/sdk-core/engine'
