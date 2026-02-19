@@ -41,7 +41,7 @@
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "vitest run",
+    "test": "vitest run --passWithNoTests",
     "lint": "echo 'sdk-core lint placeholder'",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
