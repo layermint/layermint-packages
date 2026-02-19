@@ -1,7 +1,7 @@
 {
-  "name": "@layermint/sdk-vite",
-  "version": "0.1.2",
-  "description": "Vite plugin for LayerMint symbol-level variant overrides.",
+  "name": "@layermint/sdk-core",
+  "version": "0.1.1",
+  "description": "Core LayerMint resolution and contract-check engine shared by adapters.",
   "license": "MIT",
   "author": "LayerMint contributors",
   "homepage": "https://github.com/layermint/layermint-packages#readme",
@@ -14,7 +14,7 @@
   },
   "keywords": [
     "layermint",
-    "vite",
+    "core",
     "variants",
     "typescript"
   ],
@@ -26,22 +26,28 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./core": {
-      "types": "./dist/core/engine.d.ts",
-      "import": "./dist/core/engine.js"
+    "./engine": {
+      "types": "./dist/engine.d.ts",
+      "import": "./dist/engine.js"
+    },
+    "./files": {
+      "types": "./dist/files.d.ts",
+      "import": "./dist/files.js"
+    },
+    "./exports": {
+      "types": "./dist/exports.d.ts",
+      "import": "./dist/exports.js"
     }
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "vitest run",
-    "lint": "echo 'sdk-vite lint placeholder'",
+    "lint": "echo 'sdk-core lint placeholder'",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@layermint/sdk-core": "workspace:*",
     "@layermint/shared-types": "workspace:*",
-    "typescript": "^5.8.2",
-    "vite": "^6.2.1"
+    "typescript": "^5.8.2"
   },
   "files": [
     "dist"
