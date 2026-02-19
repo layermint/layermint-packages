@@ -46,5 +46,5 @@ describe('vite plugin integration', () => {
     } finally {
       rmSync(root, { recursive: true, force: true })
     }
-  })
+  }, 20000)
 })

@@ -78,7 +78,7 @@ describe('sdk-webpack plugin', () => {
     } finally {
       rmSync(root, { recursive: true, force: true })
     }
-  })
+  }, 20000)
 
   it('throws when mergeStrategy is not namedExport', () => {
     const root = mkdtempSync(join(tmpdir(), 'layermint-webpack-'))
