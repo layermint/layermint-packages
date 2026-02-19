@@ -39,12 +39,16 @@ jobs:
           echo "@layermint:registry=https://npm.pkg.github.com" > .npmrc
           echo "//npm.pkg.github.com/:_authToken=${NODE_AUTH_TOKEN}" >> .npmrc
           pnpm --filter @layermint/shared-types publish --no-git-checks --registry https://npm.pkg.github.com
+          pnpm --filter @layermint/sdk-core publish --no-git-checks --registry https://npm.pkg.github.com
           pnpm --filter @layermint/sdk-vite publish --no-git-checks --registry https://npm.pkg.github.com
+          pnpm --filter @layermint/sdk-webpack publish --no-git-checks --registry https://npm.pkg.github.com
           pnpm --filter @layermint/cli publish --no-git-checks --registry https://npm.pkg.github.com
 
       - name: Publish to npmjs
         run: |
           rm -f .npmrc
           (cd packages/shared-types && npm publish --provenance --access public)
+          (cd packages/sdk-core && npm publish --provenance --access public)
           (cd packages/sdk-vite && npm publish --provenance --access public)
+          (cd packages/sdk-webpack && npm publish --provenance --access public)
           (cd packages/cli && npm publish --provenance --access public)

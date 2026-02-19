@@ -1,6 +1,6 @@
 {
   "name": "@layermint/cli",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "CLI for checking LayerMint variant resolution, graphs, and diffs.",
   "license": "MIT",
   "author": "LayerMint contributors",
@@ -15,6 +15,15 @@
   "keywords": [
     "layermint",
     "variants",
+    "override",
+    "overrides",
+    "multitenant",
+    "multi-tenant",
+    "whitelabel",
+    "white-label",
+    "without-fork",
+    "no-fork",
+    "theming",
     "cli",
     "typescript"
   ],
