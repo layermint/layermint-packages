@@ -1,6 +1,6 @@
 {
   "name": "@layermint/cli",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "description": "CLI for checking LayerMint variant resolution, graphs, and diffs.",
   "license": "MIT",
   "author": "LayerMint contributors",
