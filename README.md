@@ -46,7 +46,7 @@ export default defineConfig({
       },
       layers: ['region', 'brand', 'tenant', 'default'],
       roots: {
-        coreRoot: 'src/core',
+        srcRoot: 'src',
         variantsRoot: 'src/variants',
       },
       mergeStrategy: 'namedExport',

@@ -11,7 +11,7 @@ function isOverrideablePath(request: string): boolean {
   const [cleanRequest] = request.split('?')
   if (!cleanRequest) return false
   const normalized = cleanRequest.replace(/^@\//, '')
-  return normalized.startsWith('core/') || normalized.startsWith('theme/')
+  return normalized.length > 0 && !normalized.startsWith('variants/')
 }
 
 function normalizeRequestPath(request: string): string {
@@ -73,7 +73,7 @@ export class LayerMintWebpackPlugin {
     const logger = compiler.getInfrastructureLogger?.(PLUGIN_NAME)
 
     compiler.hooks.thisCompilation.tap(PLUGIN_NAME, (compilation: any) => {
-      compilation.contextDependencies?.add(resolve(this.options.roots.coreRoot, '..'))
+      compilation.contextDependencies?.add(resolve(this.options.roots.srcRoot))
       compilation.contextDependencies?.add(resolve(this.options.roots.variantsRoot))
     })
 

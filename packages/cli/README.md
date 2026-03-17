@@ -12,7 +12,7 @@ pnpm add -D @layermint/cli
 
 ```bash
 variant check --region us --brand nike --tenant acme --root .
-variant graph --import @/theme/Header --region us --tenant acme --format mermaid --root .
+variant graph --import @/features/Header --region us --tenant acme --format mermaid --root .
 variant diff --from-region eu --to-region us --root .
 ```
 
@@ -24,4 +24,3 @@ variant diff --from-region eu --to-region us --root .
 ## Docs
 
 - Repository: https://github.com/layermint/layermint-packages
-

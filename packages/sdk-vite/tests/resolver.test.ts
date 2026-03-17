@@ -11,18 +11,16 @@ function write(filePath: string, content: string): void {
 
 function setup(): { root: string; options: VariantPluginOptions } {
   const root = mkdtempSync(join(tmpdir(), "layermint-sdk-"))
-  mkdirSync(join(root, "src", "core"), { recursive: true })
-  mkdirSync(join(root, "src", "theme"), { recursive: true })
+  mkdirSync(join(root, "src", "features"), { recursive: true })
+  mkdirSync(join(root, "src", "variants", "tenant", "acme", "features"), { recursive: true })
+  mkdirSync(join(root, "src", "variants", "region", "eu", "features"), { recursive: true })
+  mkdirSync(join(root, "src", "variants", "region", "eu", "brand", "nike", "features"), { recursive: true })
+  mkdirSync(join(root, "src", "variants", "region", "eu", "tenant", "acme", "features"), { recursive: true })
 
-  mkdirSync(join(root, "src", "variants", "tenant", "acme", "theme"), { recursive: true })
-  mkdirSync(join(root, "src", "variants", "region", "eu", "theme"), { recursive: true })
-  mkdirSync(join(root, "src", "variants", "region", "eu", "brand", "nike", "theme"), { recursive: true })
-  mkdirSync(join(root, "src", "variants", "region", "eu", "tenant", "acme", "theme"), { recursive: true })
-
-  write(join(root, "src", "theme", "Greeting.ts"), 'export const title = "default"\\nexport const subtitle = "base"\\n')
-  write(join(root, "src", "variants", "tenant", "acme", "theme", "Greeting.ts"), 'export const title = "tenant"\\n')
-  write(join(root, "src", "variants", "region", "eu", "theme", "Greeting.ts"), 'export const subtitle = "region"\\n')
-  write(join(root, "src", "variants", "region", "eu", "tenant", "acme", "theme", "Greeting.ts"), 'export const title = "region-tenant"\\n')
+  write(join(root, "src", "features", "Greeting.ts"), 'export const title = "default"\nexport const subtitle = "base"\n')
+  write(join(root, "src", "variants", "tenant", "acme", "features", "Greeting.ts"), 'export const title = "tenant"\n')
+  write(join(root, "src", "variants", "region", "eu", "features", "Greeting.ts"), 'export const subtitle = "region"\n')
+  write(join(root, "src", "variants", "region", "eu", "tenant", "acme", "features", "Greeting.ts"), 'export const title = "region-tenant"\n')
 
   const options: VariantPluginOptions = {
     selector: {
@@ -32,7 +30,7 @@ function setup(): { root: string; options: VariantPluginOptions } {
     },
     layers: ["region", "brand", "tenant", "default"],
     roots: {
-      coreRoot: join(root, "src", "core"),
+      srcRoot: join(root, "src"),
       variantsRoot: join(root, "src", "variants"),
     },
     mergeStrategy: "namedExport",
@@ -46,7 +44,7 @@ describe("resolver engine", () => {
   it("resolves fallback by symbol with composed candidates", () => {
     const { root, options } = setup()
     try {
-      const graph = buildResolutionGraph(options, "@/theme/Greeting")
+      const graph = buildResolutionGraph(options, "@/features/Greeting")
       const title = graph.symbols.find(s => s.symbol === "title")
       const subtitle = graph.symbols.find(s => s.symbol === "subtitle")
 
@@ -60,8 +58,8 @@ describe("resolver engine", () => {
   it("rejects default export in overrideable modules", () => {
     const { root, options } = setup()
     try {
-      write(join(root, "src", "variants", "tenant", "acme", "theme", "Greeting.ts"), "export default function Bad(){}\\n")
-      const result = validateContracts(options, "theme/Greeting")
+      write(join(root, "src", "variants", "tenant", "acme", "features", "Greeting.ts"), "export default function Bad(){}\n")
+      const result = validateContracts(options, "features/Greeting")
       expect(result.ok).toBe(false)
       expect(result.errors.some(e => e.code === "LM001")).toBe(true)
     } finally {
@@ -72,8 +70,8 @@ describe("resolver engine", () => {
   it("warns instead of failing when symbol is shadowed in lower-priority candidates", () => {
     const { root, options } = setup()
     try {
-      write(join(root, "src", "variants", "region", "eu", "brand", "nike", "theme", "Greeting.ts"), 'export const title = "brand"\\n')
-      const result = validateContracts(options, "theme/Greeting")
+      write(join(root, "src", "variants", "region", "eu", "brand", "nike", "features", "Greeting.ts"), 'export const title = "brand"\n')
+      const result = validateContracts(options, "features/Greeting")
       expect(result.errors.some(e => e.code === "LM004")).toBe(false)
       expect(result.warnings.some(e => e.code === "LM004")).toBe(true)
     } finally {

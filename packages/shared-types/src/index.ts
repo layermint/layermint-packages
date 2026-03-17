@@ -8,7 +8,7 @@ export interface VariantSelector {
 }
 
 export interface VariantRoots {
-  coreRoot: string
+  srcRoot: string
   variantsRoot: string
 }
 

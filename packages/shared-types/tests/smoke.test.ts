@@ -6,7 +6,7 @@ describe('shared types', () => {
     const input: VariantPluginOptions = {
       selector: { region: 'eu', tenant: 'acme' },
       layers: ['region', 'brand', 'tenant', 'default'],
-      roots: { coreRoot: 'src/core', variantsRoot: 'src/variants' },
+      roots: { srcRoot: 'src', variantsRoot: 'src/variants' },
       mergeStrategy: 'namedExport',
       contractChecks: true,
     }

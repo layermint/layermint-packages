@@ -41,7 +41,7 @@ function createOptions(selector: VariantSelector, layers: LayerName[], root: str
     selector,
     layers,
     roots: {
-      coreRoot: resolve(root, "src/core"),
+      srcRoot: resolve(root, "src"),
       variantsRoot: resolve(root, "src/variants"),
     },
     mergeStrategy: "namedExport",
@@ -51,19 +51,22 @@ function createOptions(selector: VariantSelector, layers: LayerName[], root: str
 
 function collectImportPaths(root: string): string[] {
   const out: string[] = []
-  const queue = [resolve(root, "src/core"), resolve(root, "src/theme")]
+  const srcRoot = resolve(root, "src")
+  const variantsRoot = resolve(root, "src/variants")
+  const queue = [srcRoot]
 
   while (queue.length > 0) {
     const current = queue.shift()
     if (!current) break
     if (!existsSync(current)) continue
+    if (current === variantsRoot) continue
     for (const item of readdirSync(current)) {
       const full = resolve(current, item)
       const stats = statSync(full)
       if (stats.isDirectory()) {
         queue.push(full)
       } else if (/\.(ts|tsx|mts|cts)$/.test(item)) {
-        const rel = full.replace(resolve(root, "src") + "/", "").replace(/\.(ts|tsx|mts|cts)$/, "")
+        const rel = full.replace(srcRoot + "/", "").replace(/\.(ts|tsx|mts|cts)$/, "")
         out.push(`@/${rel}`)
       }
     }
@@ -137,7 +140,7 @@ program
 
 program
   .command("graph")
-  .requiredOption("--import <importPath>", "Import path, e.g. @/theme/Button")
+  .requiredOption("--import <importPath>", "Import path, e.g. @/features/Button")
   .option("--variant <variant>", "Legacy variant key (deprecated)")
   .option("--region <region>", "Region selector key")
   .option("--brand <brand>", "Brand selector key")

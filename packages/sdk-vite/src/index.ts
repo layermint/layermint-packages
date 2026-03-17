@@ -7,7 +7,7 @@ const VIRTUAL_PREFIX = '\0virtual:layermint/'
 
 function isOverrideablePath(path: string): boolean {
   const normalized = path.replace(/^@\//, '')
-  return normalized.startsWith('core/') || normalized.startsWith('theme/')
+  return normalized.length > 0 && !normalized.startsWith('variants/')
 }
 
 export function createVariantOverridePlugin(options: VariantPluginOptions): Plugin {
@@ -15,7 +15,7 @@ export function createVariantOverridePlugin(options: VariantPluginOptions): Plug
     throw new Error('LayerMint only supports mergeStrategy="namedExport" in v1')
   }
 
-  const baseRoot = resolve(options.roots.coreRoot, '..')
+  const baseRoot = resolve(options.roots.srcRoot)
   const selectorState = resolveSelector(options)
   const usingLegacyVariant = !options.selector && !!options.variant
   let warnedLegacyVariant = false
@@ -73,7 +73,9 @@ export function createVariantOverridePlugin(options: VariantPluginOptions): Plug
 
     handleHotUpdate(ctx) {
       const file = ctx.file.replace(/\\/g, '/')
-      if (!file.includes('/core/') && !file.includes('/theme/') && !file.includes('/variants/')) return
+      const srcRoot = `${baseRoot.replace(/\\/g, '/')}/`
+      const normalizedFile = file.replace(/\\/g, '/')
+      if (!normalizedFile.startsWith(srcRoot)) return
       ctx.server.ws.send({ type: 'full-reload', path: '*' })
     },
 

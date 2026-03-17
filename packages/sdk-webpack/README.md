@@ -29,7 +29,7 @@ export default {
       },
       layers: ["region", "brand", "tenant", "default"],
       roots: {
-        coreRoot: "src/core",
+        srcRoot: "src",
         variantsRoot: "src/variants",
       },
       mergeStrategy: "namedExport",
@@ -42,12 +42,13 @@ export default {
 ## Rules
 
 - Overrideable modules must use named exports only (no `export default`).
+- Any `@/*` import under `srcRoot` can be overridden, except `@/variants/*`.
 - Canonical override path order: `region/<key>/brand/<key>/tenant/<key>`.
 
 ## Notes
 
 - Requires Webpack 5 (`peerDependency`).
-- Intercepts imports under `@/core/*` and `@/theme/*`.
+- Intercepts imports under `@/*`, excluding `@/variants/*`.
 - Generates merged virtual modules in `node_modules/.cache/layermint-webpack`.
 
 ## Docs

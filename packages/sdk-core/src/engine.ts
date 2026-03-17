@@ -13,21 +13,17 @@ import type {
 import { getExportsFromFile } from "./exports.js"
 import { resolveConcreteFile } from "./files.js"
 
-const OVERRIDABLE_ROOTS = ["core/", "theme/"]
 const CANONICAL_ORDER: VariantDimension[] = ["region", "brand", "tenant"]
 const TIE_BREAK_ORDER: VariantDimension[] = ["region", "tenant", "brand"]
 
 function toOverridePath(importPath: string): string | null {
   const stripped = importPath.replace(/^@\//, "")
-  if (OVERRIDABLE_ROOTS.some(prefix => stripped.startsWith(prefix))) {
-    return stripped
-  }
-  return null
+  if (!stripped || stripped.startsWith("variants/")) return null
+  return stripped
 }
 
 function defaultFile(options: VariantPluginOptions, normalizedPath: string): string | null {
-  const baseDir = resolve(options.roots.coreRoot, "..")
-  return resolveConcreteFile(baseDir, normalizedPath)
+  return resolveConcreteFile(options.roots.srcRoot, normalizedPath)
 }
 
 function parseLegacyVariant(value?: string): VariantSelector {
@@ -146,18 +142,18 @@ export function validateContracts(options: VariantPluginOptions, normalizedPath:
           code: "LM002",
           message: `Default module not found for ${normalizedPath}`,
           file: normalizedPath,
-          suggestion: "Create the default module under src/core or src/theme",
+          suggestion: "Create the default module under srcRoot outside variantsRoot",
         },
       ],
       warnings,
     }
   }
 
-  const defaultExports = getExportsFromFile(defaultResolved, resolve(options.roots.coreRoot, ".."))
+  const defaultExports = getExportsFromFile(defaultResolved, options.roots.srcRoot)
   if (defaultExports.hasDefault) {
     errors.push({
       code: "LM001",
-      message: `Default export is not allowed in overrideable module: ${defaultResolved}`,
+      message: `Default export is not allowed in overrideable source module: ${defaultResolved}`,
       file: defaultResolved,
       suggestion: "Replace export default with named exports only",
     })
@@ -167,7 +163,7 @@ export function validateContracts(options: VariantPluginOptions, normalizedPath:
   const winningSymbolPath = new Map<string, string>()
 
   for (const candidate of candidates) {
-    const siteExports = getExportsFromFile(candidate.file, resolve(options.roots.coreRoot, ".."))
+    const siteExports = getExportsFromFile(candidate.file, options.roots.srcRoot)
 
     if (siteExports.hasDefault) {
       errors.push({
@@ -228,7 +224,7 @@ export function validateContracts(options: VariantPluginOptions, normalizedPath:
 export function buildResolutionGraph(options: VariantPluginOptions, importPath: string): ModuleResolutionGraph {
   const normalizedPath = toOverridePath(importPath)
   if (!normalizedPath) {
-    throw new Error(`Import path ${importPath} is not overrideable. Expected @/core/* or @/theme/*`)
+    throw new Error(`Import path ${importPath} is not overrideable. Expected any @/* path outside @/variants/*`)
   }
 
   const defaultResolved = defaultFile(options, normalizedPath)
@@ -237,7 +233,7 @@ export function buildResolutionGraph(options: VariantPluginOptions, importPath: 
   }
 
   const { selector } = resolveSelector(options)
-  const defaultExports = getExportsFromFile(defaultResolved, resolve(options.roots.coreRoot, ".."))
+  const defaultExports = getExportsFromFile(defaultResolved, options.roots.srcRoot)
   const symbols = new Map<string, { layer: LayerName; sourceFile: string; candidatePath: string; rank: number }>()
 
   for (const symbol of defaultExports.names) {
@@ -253,7 +249,7 @@ export function buildResolutionGraph(options: VariantPluginOptions, importPath: 
 
   for (const candidate of candidates) {
     if (!candidate.exists || candidate.candidatePath === "default") continue
-    const siteExports = getExportsFromFile(candidate.file, resolve(options.roots.coreRoot, ".."))
+    const siteExports = getExportsFromFile(candidate.file, options.roots.srcRoot)
     for (const symbol of siteExports.names) {
       const current = symbols.get(symbol)
       if (!current || current.layer === "default") {
@@ -298,15 +294,16 @@ function walk(dir: string, files: string[] = []): string[] {
 }
 
 export function checkVariant(options: VariantPluginOptions): CheckResult {
-  const baseRoot = resolve(options.roots.coreRoot, "..")
-  const files = [...walk(resolve(baseRoot, "core")), ...walk(resolve(baseRoot, "theme"))]
+  const files = walk(options.roots.srcRoot)
 
   const allErrors: ContractError[] = []
   const allWarnings: ContractError[] = []
+  const variantsRoot = resolve(options.roots.variantsRoot).replace(/\\/g, "/")
 
   for (const file of files) {
-    const normalizedPath = relative(baseRoot, file).replace(/\\/g, "/").replace(/\.(ts|tsx|mts|cts)$/, "")
-    if (!OVERRIDABLE_ROOTS.some(prefix => normalizedPath.startsWith(prefix))) continue
+    const normalizedFile = file.replace(/\\/g, "/")
+    if (normalizedFile === variantsRoot || normalizedFile.startsWith(`${variantsRoot}/`)) continue
+    const normalizedPath = relative(options.roots.srcRoot, file).replace(/\\/g, "/").replace(/\.(ts|tsx|mts|cts)$/, "")
     const result = validateContracts(options, normalizedPath)
     allErrors.push(...result.errors)
     allWarnings.push(...result.warnings)
