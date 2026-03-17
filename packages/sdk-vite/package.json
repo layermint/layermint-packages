@@ -1,7 +1,7 @@
 {
   "name": "@layermint/sdk-vite",
   "version": "0.2.0",
-  "description": "Vite plugin for LayerMint symbol-level variant overrides.",
+  "description": "Vite plugin for LayerMint srcRoot overrides with symbol-level fallback.",
   "license": "MIT",
   "author": "LayerMint contributors",
   "homepage": "https://github.com/layermint/layermint-packages#readme",

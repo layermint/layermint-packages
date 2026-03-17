@@ -1,6 +1,6 @@
 # @layermint/sdk-webpack
 
-Webpack plugin for LayerMint composable overrides (`region + brand + tenant`) with named-export fallback and contract checks.
+Webpack plugin for LayerMint composable `srcRoot` overrides (`region + brand + tenant`) with named-export fallback and contract checks.
 
 ## Install
 
@@ -44,6 +44,12 @@ export default {
 - Overrideable modules must use named exports only (no `export default`).
 - Any `@/*` import under `srcRoot` can be overridden, except `@/variants/*`.
 - Canonical override path order: `region/<key>/brand/<key>/tenant/<key>`.
+
+## What It Does
+
+- Uses `srcRoot` as the canonical source tree.
+- Resolves overrides from `variantsRoot/<selector>/...`.
+- Writes generated merged modules to cache so Webpack can load the resolved export graph.
 
 ## Notes
 

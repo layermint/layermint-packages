@@ -1,7 +1,7 @@
 {
   "name": "@layermint/cli",
   "version": "0.2.0",
-  "description": "CLI for checking LayerMint variant resolution, graphs, and diffs.",
+  "description": "CLI for checking LayerMint srcRoot override resolution, graphs, and diffs.",
   "license": "MIT",
   "author": "LayerMint contributors",
   "homepage": "https://github.com/layermint/layermint-packages#readme",

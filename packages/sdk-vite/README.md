@@ -1,6 +1,6 @@
 # @layermint/sdk-vite
 
-Vite plugin for LayerMint composable overrides (`region + brand + tenant`) with named-export fallback and contract checks.
+Vite plugin for LayerMint composable `srcRoot` overrides (`region + brand + tenant`) with named-export fallback and contract checks.
 
 ## Install
 
@@ -39,6 +39,12 @@ export default defineConfig({
 - Overrideable modules must use named exports only (no `export default`).
 - Any `@/*` import under `srcRoot` can be overridden, except `@/variants/*`.
 - Canonical override path order: `region/<key>/brand/<key>/tenant/<key>`.
+
+## What It Does
+
+- Uses `srcRoot` as the canonical source tree.
+- Resolves overrides from `variantsRoot/<selector>/...`.
+- Generates a virtual module that merges named exports with fallback to the default source file.
 
 ## Docs
 

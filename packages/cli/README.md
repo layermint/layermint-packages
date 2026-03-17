@@ -1,6 +1,6 @@
 # @layermint/cli
 
-CLI for inspecting LayerMint override resolution.
+CLI for inspecting LayerMint override resolution across a `srcRoot` baseline and a `variantsRoot` override tree.
 
 ## Install
 
@@ -19,6 +19,7 @@ variant diff --from-region eu --to-region us --root .
 ## Notes
 
 - Works with composable selector flags: `--region`, `--brand`, `--tenant`.
+- Scans imports from `srcRoot` and skips `variantsRoot` as a source baseline.
 - Legacy `--variant` is still accepted but deprecated.
 
 ## Docs

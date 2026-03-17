@@ -1,7 +1,7 @@
 {
   "name": "@layermint/sdk-core",
   "version": "0.2.0",
-  "description": "Core LayerMint resolution and contract-check engine shared by adapters.",
+  "description": "Core LayerMint engine for srcRoot override resolution and contract checks.",
   "license": "MIT",
   "author": "LayerMint contributors",
   "homepage": "https://github.com/layermint/layermint-packages#readme",
