@@ -40,6 +40,9 @@
     "lint": "echo 'shared-types lint placeholder'",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  },
   "files": [
     "dist"
   ],

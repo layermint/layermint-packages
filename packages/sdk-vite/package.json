@@ -49,7 +49,12 @@
   },
   "dependencies": {
     "@layermint/sdk-core": "workspace:*",
-    "@layermint/shared-types": "workspace:*",
+    "@layermint/shared-types": "workspace:*"
+  },
+  "peerDependencies": {
+    "vite": "^6.0.0"
+  },
+  "devDependencies": {
     "typescript": "^5.8.2",
     "vite": "^6.2.1"
   },

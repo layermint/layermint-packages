@@ -47,6 +47,10 @@
     "@layermint/sdk-core": "workspace:*",
     "@layermint/shared-types": "workspace:*"
   },
+  "devDependencies": {
+    "typescript": "^5.8.2",
+    "webpack": "^5.0.0"
+  },
   "peerDependencies": {
     "webpack": "^5.0.0"
   },

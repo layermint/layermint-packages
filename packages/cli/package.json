@@ -44,6 +44,9 @@
     "@layermint/shared-types": "workspace:*",
     "commander": "^13.1.0"
   },
+  "devDependencies": {
+    "typescript": "^5.8.2"
+  },
   "files": [
     "dist"
   ],

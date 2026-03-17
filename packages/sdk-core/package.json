@@ -56,7 +56,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@layermint/shared-types": "workspace:*",
+    "@layermint/shared-types": "workspace:*"
+  },
+  "devDependencies": {
     "typescript": "^5.8.2"
   },
   "files": [
