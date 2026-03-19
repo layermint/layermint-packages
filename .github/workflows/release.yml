@@ -44,7 +44,15 @@ jobs:
           pnpm --filter @layermint/sdk-webpack publish --no-git-checks --registry https://npm.pkg.github.com
           pnpm --filter @layermint/cli publish --no-git-checks --registry https://npm.pkg.github.com
 
+      - name: Configure npm registry
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
       - name: Publish to npmjs
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           rm -f .npmrc
           (cd packages/shared-types && npm publish --provenance --access public)
